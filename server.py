@@ -41,7 +41,13 @@ protocol = CustomProtocol("IRAN_ANTI_FILTER_KEY_2026")
 async def dashboard(request: Request):
     cursor.execute("SELECT username, uuid, active, bw_used FROM users")
     users = [{"username": r[0], "uuid": r[1], "active": bool(r[2]), "bw": f"{r[3]/1024/1024:.2f} MB"} for r in cursor.fetchall()]
-    return templates.TemplateResponse("dashboard.html", {"request": request, "users": users})
+    
+    # کد اصلاح شده برای سازگاری با نسخه‌های جدید FastAPI و Starlette
+    return templates.TemplateResponse(
+        request=request, 
+        name="dashboard.html", 
+        context={"request": request, "users": users}
+    )
 
 @app.post("/api/create_user")
 async def create_user(request: Request):
